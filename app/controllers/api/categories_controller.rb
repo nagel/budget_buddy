@@ -8,7 +8,8 @@ class Api::CategoriesController < ApplicationController
   def create
     @category = Category.new({
       category_name: params[:category_name],
-      user_id: params[:user_id]
+      user_id: params[:user_id],
+      budget_limit: params[:budget_limit]
     })
     @category.save
 
@@ -25,6 +26,7 @@ class Api::CategoriesController < ApplicationController
 
     @category.category_name = params[:category_name] || @catogery.category_name
     @category.user_id = params[:user_id] || @category.user_id
+    @catogery.budget_limit = params[:budget_limit] || @catogery.budget_limit
 
     @category.save
 
