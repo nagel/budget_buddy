@@ -1,14 +1,14 @@
 class Api::CategoriesController < ApplicationController
 
   def index
-    @categories = Category.all
+    @categories = Category.where(user_id: current_user.id)
     render "index.json.jbuilder"
   end
 
   def create
     @category = Category.new({
       category_name: params[:category_name],
-      user_id: params[:user_id],
+      user_id: current_user.id,
       budget_limit: params[:budget_limit]
     })
     @category.save
@@ -24,9 +24,9 @@ class Api::CategoriesController < ApplicationController
   def update
     @category = Category.find_by(id: params[:id])
 
-    @category.category_name = params[:category_name] || @catogery.category_name
+    @category.category_name = params[:category_name] || @category.category_name
     @category.user_id = params[:user_id] || @category.user_id
-    @catogery.budget_limit = params[:budget_limit] || @catogery.budget_limit
+    @category.budget_limit = params[:budget_limit] || @category.budget_limit
 
     @category.save
 
@@ -35,6 +35,9 @@ class Api::CategoriesController < ApplicationController
 
   def destroy
     @category = Category.find_by(id: params[:id])
+
+    # Updates all transaction category IDs to null for the category being deleted. 
+    @category.transactions.update_all(category_id: nil)
     @category.destroy
 
     render json: {message: "Category deleted!"}

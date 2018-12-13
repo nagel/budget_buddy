@@ -1,0 +1,113 @@
+<button id="link-button">Link Account</button>
+
+<button id="delete-button">Remove Item</button>
+
+<button id="auth-button">save accounts</button>
+
+<button id="trans-button">pull trans</button>
+
+<button id="category-button">get categories</button>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+
+<script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+
+<script type="text/javascript">
+
+  (function($) {
+    var handler = Plaid.create({
+      clientName: 'Budget Buddy',
+      env: 'development',
+      // Replace with your public_key from the Dashboard
+      key: '7a7b2dccb03c34134f5e2b97c28d5d',
+      product: ['transactions'],
+      // Optional, use webhooks to get transaction and error updates
+      webhook: 'https://requestb.in',
+      onLoad: function() {
+        // Optional, called when Link loads
+        console.log("Link has loaded");
+      },
+      onSuccess: function(public_token, metadata) {
+        // Send the public_token to your app server.
+        // The metadata object contains info about the institution the
+        // user selected and the account ID or IDs, if the
+        // Select Account view is enabled.
+
+        //Goes to POST verb in server.rb
+        $.post('/api/items', {
+          public_token: public_token,
+        });
+      },
+      onExit: function(err, metadata) {
+        // The user exited the Link flow.
+        if (err != null) {
+          // The user encountered a Plaid API error prior to exiting.
+        }
+        // metadata contains information about the institution
+        // that the user selected and the most recent API request IDs.
+        // Storing this information can be helpful for support.
+      },
+      onEvent: function(eventName, metadata) {
+        // Optionally capture Link flow events, streamed through
+        // this callback as your users connect an Item to Plaid.
+        // For example:
+        // eventName = "TRANSITION_VIEW"
+        // metadata  = {
+        //   link_session_id: "123-abc",
+        //   mfa_type:        "questions",
+        //   timestamp:       "2017-09-14T14:42:19.350Z",
+        //   view_name:       "MFA"
+        // }
+        
+      }
+    });
+
+    $('#link-button').on('click', function(e) {
+      handler.open();
+    });
+
+    $('#delete-button').on('click', function(e) {
+        $.ajax({
+          url: 'api/items/14',
+          type: 'DELETE',
+          success: function(result) {
+            console.log("BUTTON WORKS");
+          }
+      });
+    });
+
+    $('#auth-button').on('click', function(e) {
+    $.ajax({
+      url: 'api/accounts',
+      type: 'POST',
+      success: function(result) {
+        console.log("accounts WORKS");
+        }
+      });
+    });
+
+    $('#trans-button').on('click', function(e) {
+    $.ajax({
+      url: 'api/transactions',
+      type: 'POST',
+      success: function(result) {
+        console.log("trans WORKS");
+        }
+      });
+    });
+
+    $('#category-button').on('click', function(e) {
+    $.ajax({
+      url: 'api/transactions',
+      type: 'GET',
+      success: function(result) {
+        console.log("cat WORKS");
+        }
+      });
+    });
+
+
+  })(jQuery);
+
+</script>

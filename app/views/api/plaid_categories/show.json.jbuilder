@@ -1,0 +1,3 @@
+json.plaid_category_API_ID @plaid_category.plaid_category_API_ID
+json.plaid_category_name @plaid_category.plaid_category_name
+json.category_id @plaid_category.category_id
