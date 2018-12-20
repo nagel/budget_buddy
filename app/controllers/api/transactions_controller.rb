@@ -10,6 +10,7 @@ class Api::TransactionsController < ApplicationController
 
   # For new transactions that are not being updated from the Plaid API
     # Assigns custom category to transaction if similar transaction already occurred 
+    # Does not update transaction info if category is the same...
   def create
 
     client = @@client
@@ -91,6 +92,8 @@ class Api::TransactionsController < ApplicationController
     @transaction.category_id = params[:category_id] || @transaction.category_id
 
     @transaction.save
+
+    render "show.json.jbuilder"
   end 
 
   def destroy

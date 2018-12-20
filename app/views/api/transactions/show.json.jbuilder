@@ -6,4 +6,5 @@
   json.category_id @transaction.category_id
   json.category_info @transaction.category_name
   json.account_id @transaction.account_id
+  json.account_name @transaction.account_name
   json.user_id @transaction.user_id
