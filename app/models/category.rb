@@ -39,17 +39,19 @@ class Category < ApplicationRecord
   # Sums POSTED transactions for the current month by category
   def sum_category_transactions_formatted
 
-    category_id = self.id
-    start_date = Date.today.at_beginning_of_month
-    end_date = Date.today.end_of_month
-    pending = false
+    # category_id = self.id
+    # start_date = Date.today.at_beginning_of_month
+    # end_date = Date.today.end_of_month
+    # pending = false
 
-    categorized_transaction = Transaction.where(["category_id = :category_id AND transaction_date >= :start_date AND transaction_date <= :end_date AND pending = :pending", { category_id: category_id, start_date: start_date, end_date: end_date, pending: pending }])
+    # categorized_transaction = Transaction.where(["category_id = :category_id AND transaction_date >= :start_date AND transaction_date <= :end_date AND pending = :pending", { category_id: category_id, start_date: start_date, end_date: end_date, pending: pending }])
 
-    sum = 0
-    categorized_transaction.each do |transaction|
-      sum += transaction.amount
-    end 
+    # sum = 0
+    # categorized_transaction.each do |transaction|
+    #   sum += transaction.amount
+    # end 
+
+    sum = self.sum_category_transactions()
 
     return ActionController::Base.helpers.number_to_currency(sum)
 
