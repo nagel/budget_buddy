@@ -26,9 +26,13 @@ class Account < ApplicationRecord
 
     if self.updated_at > (DateTime.now - 1)
       return "yesterday at " + self.updated_at.strftime("%l" + ":" + "%M"  "%p")
+    elsif self.updated_at > DateTime.now.beginning_of_day
+      return "today at " + self.updated_at.strftime("%l" + ":" + "%M"  "%p")
+    else
+      return self.updated_at.strftime("%b %e %y %l" + ":" + "%M")
     end 
 
-    return self.updated_at.strftime("%b %e %y %l" + ":" + "%M")
+
   end 
 
 end
