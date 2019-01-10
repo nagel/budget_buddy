@@ -10,5 +10,7 @@ json.array! @accounts.each do |account|
   json.available_formatted account.available_formatted
   json.current account.current
   json.current_formatted account.current_formatted
+  json.updated_at account.updated_at
+  json.updated_at_formatted account.updated_at_formatted
 
 end

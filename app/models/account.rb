@@ -22,4 +22,13 @@ class Account < ApplicationRecord
 
   end 
 
+  def updated_at_formatted
+
+    if self.updated_at > (DateTime.now - 1)
+      return "yesterday at " + self.updated_at.strftime("%l" + ":" + "%M"  "%p")
+    end 
+
+    return self.updated_at.strftime("%b %e %y %l" + ":" + "%M")
+  end 
+
 end
