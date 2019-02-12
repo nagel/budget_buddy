@@ -1,12 +1,12 @@
 class ApplicationController < ActionController::Base
 
-  #CORS
-  config.middleware.insert_before 0, Rack::Cors do
-    allow do
-      origins '*'
-      resource '*', headers: :any, methods: [:get, :post, :options]
-    end
-  end
+  # #CORS
+  # config.middleware.insert_before 0, Rack::Cors do
+  #   allow do
+  #     origins '*'
+  #     resource '*', headers: :any, methods: [:get, :post, :options]
+  #   end
+  # end
 
   # WITH SANDBOX KEY
   @@client = Plaid::Client.new(
