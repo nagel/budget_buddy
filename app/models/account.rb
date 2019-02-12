@@ -32,7 +32,6 @@ class Account < ApplicationRecord
       return self.updated_at.strftime("%b %e %y %l" + ":" + "%M")
     end 
 
-
   end 
 
 end

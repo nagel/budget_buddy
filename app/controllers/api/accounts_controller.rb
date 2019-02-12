@@ -2,6 +2,31 @@ class Api::AccountsController < ApplicationController
 
   def index
     @accounts = Account.where(user_id: current_user.id)
+
+    # When requested from the accounts page, balances will be updated from the Plaid API
+    if params[:page] == "accounts"
+
+      # Instance of client object
+      client = @@client
+
+   
+      # Retrieve Access Token
+      token = Item.select(:access_token).find_by(id: 14)
+
+      puts "*" * 50
+      puts token.access_token
+      puts "*" * 50
+
+      response = client.accounts.balance.get(token.access_token)
+
+      pp response[:accounts][0]
+
+      @accounts.each do |account|
+
+      end 
+
+    end 
+
     render "index.json.jbuilder"
   end
 
@@ -60,6 +85,7 @@ class Api::AccountsController < ApplicationController
   end
 
   def update
+
     @account = Account.find_by(id: params[:id])
 
     @account.account_name = params[:account_name] || @account.account_name
