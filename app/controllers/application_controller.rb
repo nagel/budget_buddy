@@ -1,9 +1,17 @@
 class ApplicationController < ActionController::Base
 
-  config.action_dispatch.default_headers = {
-    'Access-Control-Allow-Origin' => 'https://blissful-hugle-75d10a.netlify.com',
-    'Access-Control-Request-Method' => %w{GET POST OPTIONS}.join(",")
-  }
+    config.middleware.insert_before 0, Rack::Corsdo
+
+      allow do
+
+        origins '*'
+
+        resource '*', :headers=>:any, :methods=>[:get, :post, :options]
+
+      end
+
+    end
+
 
   # WITH SANDBOX KEY
   @@client = Plaid::Client.new(
